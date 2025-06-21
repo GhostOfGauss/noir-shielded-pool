@@ -1,11 +1,14 @@
-fn main(x: Field, y: pub Field) {
-    assert(x != y);
+use asset::{assert_balanced_tx, Asset};
+
+mod asset;
+
+fn main(inputs: [Asset; 2], outputs: [Asset; 2]) {
+    assert_balanced_tx(inputs, outputs);
 }
 
 #[test]
 fn test_main() {
-    main(1, 2);
-
-    // Uncomment to make test fail
-    // main(1, 1);
+    let inputs = [Asset::new(1, 3), Asset::new(1, 4)];
+    let outputs = [Asset::new(1, 2), Asset::new(1, 5)];
+    main(inputs, outputs);
 }
