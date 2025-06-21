@@ -1,0 +1,32 @@
+Compiled ACIR for balanced asset check:
+asset_in_0 + asset_in_1 == asset_out_0 + asset_out_1
+
+func 0
+current witness index : _9
+private parameters indices : [_0, _1, _2, _3, _4, _5, _6, _7]
+_0: asset_in_0 id
+_1: asset_in_0 amount
+
+_2: asset_in_1 id
+_3: asset_in_1 amount
+
+_4: asset_out_0 id
+_5: asset_out_0 amount
+
+_6: asset_out_1 id
+_7: asset_out_1 amt
+
+public parameters indices : []
+return value indices : []
+EXPR [ (1, _0) (-1, _2) 0 ] // input asset id's equal
+EXPR [ (1, _1) (1, _3) (-1, _8) 0 ] // _8: input total amount
+BLACKBOX::RANGE [(_8, 32)] [] // input total amount range check
+EXPR [ (1, _4) (-1, _6) 0 ] // output asset id's equal
+EXPR [ (1, _5) (1, _7) (-1, _9) 0 ] // _9: output total amount
+BLACKBOX::RANGE [(_9, 32)] [] // output total amount range check
+EXPR [ (1, _0) (-1, _4) 0 ] // input id's equal output id's
+EXPR [ (1, _8) (-1, _9) 0 ] // input total amount equal output total amount
+
+
+[shielded_pool] Circuit witness successfully solved
+[shielded_pool] Witness saved to target/shielded_pool.gz
