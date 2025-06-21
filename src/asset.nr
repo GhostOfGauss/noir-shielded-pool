@@ -3,8 +3,8 @@ use std::ops::Add;
 use std::cmp::Eq;
 
 pub struct Asset {
-    id: Field,
-    amount: Field,
+    pub id: Field,
+    pub amount: Field,
 }
 
 impl Asset {
