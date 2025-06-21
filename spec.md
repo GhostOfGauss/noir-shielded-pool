@@ -119,6 +119,11 @@ The circuit's statement is the union of:
 - required to transmit the output UTXO randomness to the Receiver, else tx's become unspendable
 
 # Cryptography
+- Commitment functions
+    - UTXO commitment: curve to field hashing
+    - Nullifier commitment
+- Encryption
+- Accumulator: Merkle tree
 - Barretenberg default prover?
   - which curves?
   - curve specs
