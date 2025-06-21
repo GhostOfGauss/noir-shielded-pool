@@ -14,6 +14,8 @@ Assets are considered *equal* if they are of the same type and same amount.
 
 ## Keypair
 
+TODO: Use embedded curve defined over the proof system scalar field so that curve arith. is native. This means sk is from embedded curve scalar field, i.e. is represented non-natively
+
 A `Keypair` consists of a (`SecretKey`, `PublicKey`) pair. The `SecretKey` will be modeled as a field element $\mathsf{sk} \in \mathbb{F}$ and the `PublicKey` is an elliptic curve point defined by
 $$ \mathsf{pk} = \mathsf{sk} \cdot g$$
 where $g \in \mathbb{G}$ generates the subgroup of order $| \mathbb{F} |$.
