@@ -1,0 +1,6 @@
+[package]
+name = "shielded_pool"
+type = "bin"
+authors = ["Todd Norton"]
+
+[dependencies]
