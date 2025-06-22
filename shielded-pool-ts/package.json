@@ -14,7 +14,8 @@
     "./dist"
   ],
   "dependencies": {
-    "@zk-kit/imt": "^2.0.0-beta.8"
+    "@zk-kit/imt": "^2.0.0-beta.8",
+    "poseidon-lite": "^0.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",
