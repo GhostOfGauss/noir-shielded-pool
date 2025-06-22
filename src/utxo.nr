@@ -10,7 +10,7 @@ pub struct PreUtxo {
 }
 
 /// Private Utxo
-pub struct Utxo<C> {
+pub struct Utxo {
     // TODO: Seems Noir does not allow to define
     // the struct with the bound C: UtxoCommitment
     // and use the associated Output type
@@ -18,16 +18,17 @@ pub struct Utxo<C> {
     commitment: Field,
 }
 
+pub fn default_utxo_commit(pre: PreUtxo) -> Field {
+    <DummyUtxoCommitment as UtxoCommitment>::commit(pre)
+}
+
 pub trait UtxoCommitment {
     fn commit(pre: PreUtxo) -> Field;
 }
 
-impl<C> Utxo<C>
-where
-    C: UtxoCommitment,
-{
+impl Utxo {
     pub fn new(pre: PreUtxo) -> Self {
-        Self { commitment: C::commit(pre) }
+        Self { commitment: default_utxo_commit(pre) }
     }
 }
 
@@ -41,8 +42,8 @@ impl UtxoCommitment for DummyUtxoCommitment {
     }
 }
 
-pub trait UtxoNullifier<C> {
-    fn nullify(utxo: Utxo<C>, sk: SecretKey) -> Field;
+pub trait UtxoNullifier {
+    fn nullify(utxo: Utxo, sk: SecretKey) -> Field;
 }
 
 // Placeholder for proper nullifier, simply
@@ -50,8 +51,8 @@ pub trait UtxoNullifier<C> {
 // not privacy-preserving.
 pub struct DummyUtxoNullifier;
 
-impl<C> UtxoNullifier<C> for DummyUtxoNullifier {
-    fn nullify(utxo: Utxo<C>, _sk: SecretKey) -> Field {
+impl UtxoNullifier for DummyUtxoNullifier {
+    fn nullify(utxo: Utxo, _sk: SecretKey) -> Field {
         utxo.commitment
     }
 }
