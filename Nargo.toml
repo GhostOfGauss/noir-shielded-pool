@@ -5,3 +5,4 @@ authors = ["Todd Norton"]
 
 [dependencies]
 poseidon = { tag = "v0.1.0", git = "https://github.com/noir-lang/poseidon" }
+trees = { git = "https://github.com/privacy-scaling-explorations/zk-kit.noir", tag = "merkle-trees-v0.0.1", directory = "packages/merkle-trees" }

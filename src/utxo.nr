@@ -29,6 +29,10 @@ impl Utxo {
     pub fn nullify(self, sk: SecretKey) -> Field {
         default_utxo_nullifier(self, sk)
     }
+
+    pub fn commitment(self) -> Field {
+        self.commitment
+    }
 }
 
 pub fn default_utxo_commit(pre: PreUtxo) -> Field {

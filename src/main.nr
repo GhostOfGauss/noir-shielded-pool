@@ -5,6 +5,7 @@ use utxo::{PreUtxo, Utxo};
 mod accumulator;
 mod asset;
 mod keypair;
+mod merkle;
 mod transaction;
 mod utxo;
 
