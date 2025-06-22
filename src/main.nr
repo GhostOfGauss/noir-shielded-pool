@@ -1,13 +1,13 @@
-use keypair::{Keypair, PublicKey, SecretKey};
+use transaction::{Transaction, TransactionPost};
 
 mod accumulator;
 mod asset;
 mod keypair;
+mod transaction;
 mod utxo;
 
-fn main(secret: SecretKey) -> pub PublicKey {
-    let keypair = Keypair::new(secret);
-    keypair.public()
+fn main(tx: Transaction) -> pub TransactionPost {
+    TransactionPost::new(tx)
 }
 
 // #[test]
