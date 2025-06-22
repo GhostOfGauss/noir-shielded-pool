@@ -1,4 +1,5 @@
 // use transaction::{Transaction, TransactionPost};
+use keypair::SecretKey;
 use utxo::{PreUtxo, Utxo};
 
 mod accumulator;
@@ -11,8 +12,8 @@ mod utxo;
 //     TransactionPost::new(tx)
 // }
 
-fn main(pre: PreUtxo) -> pub Utxo {
-    Utxo::new(pre)
+fn main(utxo: Utxo, sk: SecretKey) -> pub Field {
+    utxo.nullify(sk)
 }
 
 // #[test]

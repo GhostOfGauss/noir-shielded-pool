@@ -1,0 +1,20 @@
+Compiled ACIR for utxo_nullify:
+func 0
+current witness index : _14
+private parameters indices : [_0, _1, _2]
+_0: sk.lo
+_1: sk.hi
+_2: utxo.commitment
+public parameters indices : []
+return value indices : [_3]
+EXPR [ (-1, _4) 38789383685 ] // _4: global domain tag
+EXPR [ (-1, _5) 73786976294838206464 ] // _8: poseidon const? differs from one seen in comm
+BLACKBOX::POSEIDON2_PERMUTATION [(_4, 254), (_0, 254), (_1, 254), (_5, 254)] [_6, _7, _8, _9]
+EXPR [ (1, _2) (1, _6) (-1, _10) 0 ]
+BLACKBOX::POSEIDON2_PERMUTATION [(_10, 254), (_7, 254), (_8, 254), (_9, 254)] [_11, _12, _13, _14]
+EXPR [ (1, _3) (-1, _11) 0 ] // copy poseidon state slot 0 to output var
+
+
+[shielded_pool] Circuit witness successfully solved
+[shielded_pool] Witness saved to target/shielded_pool.gz
+[shielded_pool] Circuit output: Field(11450179560691428889689373431357800602900003918033471597135221243068362122557)
