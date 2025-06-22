@@ -1,4 +1,4 @@
-use crate::accumulator::{UtxoAccumulator, UtxoAccumulatorRoot};
+use crate::accumulator::{UtxoAccumulator, UtxoAccumulatorRoot, UtxoInclusionWitness};
 use crate::asset::assert_balanced_tx;
 use crate::keypair::{Keypair, SecretKey};
 use crate::utxo::{PreUtxo, Utxo};
@@ -28,7 +28,9 @@ impl TransactionPost {
         let outgoing_utxos = tx.outgoing_pre_utxos.map(|pre| Utxo::new(pre));
 
         // Incoming UTXO existence
-        incoming_utxos.for_each(|utxo| tx.accumulator.contains(utxo));
+        incoming_utxos.for_eachi(|i, utxo| {
+            tx.utxo_accumulator.contains(utxo, tx.incoming_utxo_inclusions[i])
+        });
 
         // Incoming UTXO ownership
         let spender_keypair = Keypair::new(tx.spender_sk);
@@ -37,7 +39,7 @@ impl TransactionPost {
         // Incoming UTXO nullifiers
         let incoming_nullifiers = incoming_utxos.map(|utxo| utxo.nullify(tx.spender_sk));
 
-        Self { outgoing_utxos, incoming_nullifiers, accumulator_root: tx.accumulator.root() }
+        Self { outgoing_utxos, incoming_nullifiers, accumulator_root: tx.utxo_accumulator.root() }
     }
 }
 
@@ -47,5 +49,6 @@ pub struct Transaction {
     incoming_pre_utxos: [PreUtxo; 2],
     outgoing_pre_utxos: [PreUtxo; 2],
     spender_sk: SecretKey,
-    accumulator: UtxoAccumulator,
+    utxo_accumulator: UtxoAccumulator,
+    incoming_utxo_inclusions: [UtxoInclusionWitness; 2],
 }

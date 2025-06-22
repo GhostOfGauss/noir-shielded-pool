@@ -1,15 +1,27 @@
 use crate::utxo::Utxo;
 
-pub struct UtxoAccumulator;
+// Note: The realized accumulator is not part of
+// the circuit logic, it is held by validators.
+pub struct UtxoAccumulator {
+    root: UtxoAccumulatorRoot,
+}
+
+// UtxoAccumulator can hold 2**ACCUMULATOR_DEPTH Utxo's
+global ACCUMULATOR_DEPTH: u32 = 10;
+
+pub type UtxoInclusionWitness = [(Field, bool); ACCUMULATOR_DEPTH];
 
 pub type UtxoAccumulatorRoot = Field;
 
 impl UtxoAccumulator {
-    pub fn contains(self, utxo: Utxo) {
-        // Asserts utxo is contained in self.
-    }
-    pub fn root(self) -> UtxoAccumulatorRoot {
+    /// Check a UTXO against its inclusion witness.
+    /// This function constrains the UTXO to belong to
+    /// an accumulator with given root.
+    pub fn contains(self, utxo: Utxo, inclusion_witness: UtxoInclusionWitness) {
         // TODO
-        Field::default()
+    }
+
+    pub fn root(self) -> UtxoAccumulatorRoot {
+        self.root
     }
 }
