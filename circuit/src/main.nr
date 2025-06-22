@@ -12,15 +12,9 @@ mod merkle;
 mod transaction;
 mod utxo;
 
-// fn main(tx: Transaction) -> pub TransactionPost {
-//     let utxo_accumulator = MerkleTree::from_root(tx.utxo_accumulator_root);
-//     TransactionPost::new(utxo_accumulator, tx)
-// }
-
-fn main(utxo: Utxo, path: MerkleInclusionPath, root: pub Field) {
-    let tree = MerkleTree::from_root(root);
-    println(f"root: {root}");
-    tree.contains(utxo, path);
+fn main(tx: Transaction) -> pub TransactionPost {
+    let utxo_accumulator = MerkleTree::from_root(tx.utxo_accumulator_root);
+    TransactionPost::new(utxo_accumulator, tx)
 }
 
 // #[test]

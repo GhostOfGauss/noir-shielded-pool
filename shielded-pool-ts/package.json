@@ -14,6 +14,8 @@
     "./dist"
   ],
   "dependencies": {
+    "@aztec/bb.js": "0.84.0",
+    "@noir-lang/noir_js": "1.0.0-beta.6",
     "@zk-kit/imt": "^2.0.0-beta.8",
     "poseidon-lite": "^0.3.0"
   },
