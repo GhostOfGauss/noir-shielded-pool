@@ -1,10 +1,10 @@
 pub trait Accumulator {
     /// Can be inserted into accumulator
     type Item;
-    /// Proves inclusion of item against root
-    type Witness;
     /// Accumulator root
     type Root;
+    /// Proves inclusion of item against root
+    type Witness;
 
     /// Return the current accumulator root.
     fn root(self) -> Self::Root;
