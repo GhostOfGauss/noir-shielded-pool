@@ -1,5 +1,8 @@
 use crate::asset::Asset;
 use crate::keypair::{PublicKey, SecretKey};
+use poseidon::poseidon2::Poseidon2Hasher;
+use std::default::Default;
+use std::hash::Hasher;
 
 /// Data required to reconstruct the Utxo commitment.
 /// Known to Sender and Receiver, not posted to Ledger.
@@ -29,11 +32,11 @@ impl Utxo {
 }
 
 pub fn default_utxo_commit(pre: PreUtxo) -> Field {
-    <DummyUtxoCommitment as UtxoCommitment>::commit(pre)
+    <Poseidon2UtxoCommitment as UtxoCommitment>::commit(pre)
 }
 
 pub fn default_utxo_nullifier(utxo: Utxo, sk: SecretKey) -> Field {
-    <DummyUtxoNullifier as UtxoNullifier>::nullify(utxo, sk)
+    <Poseidon2UtxoNullifier as UtxoNullifier>::nullify(utxo, sk)
 }
 
 pub trait UtxoCommitment {
@@ -50,6 +53,28 @@ impl UtxoCommitment for DummyUtxoCommitment {
     }
 }
 
+/// Use Poseidon2 hasher to commit to
+/// pre-UTXO data.
+pub struct Poseidon2UtxoCommitment;
+
+global UTXO_COMMIT_DOMAIN_TAG: Field = Field::from_le_bytes([0, 1, 2, 3, 4]);
+
+impl UtxoCommitment for Poseidon2UtxoCommitment {
+    fn commit(pre: PreUtxo) -> Field {
+        // Initialize hasher
+        let mut hasher = Poseidon2Hasher::default();
+        hasher.write(UTXO_COMMIT_DOMAIN_TAG);
+        // Absorb pre-UTXO data
+        hasher.write(pre.asset.id);
+        hasher.write(pre.asset.amount);
+        hasher.write(pre.pk.x);
+        hasher.write(pre.pk.y);
+        hasher.write(pre.randomness);
+
+        hasher.finish()
+    }
+}
+
 pub trait UtxoNullifier {
     fn nullify(utxo: Utxo, sk: SecretKey) -> Field;
 }
@@ -62,5 +87,23 @@ pub struct DummyUtxoNullifier;
 impl UtxoNullifier for DummyUtxoNullifier {
     fn nullify(utxo: Utxo, _sk: SecretKey) -> Field {
         utxo.commitment
+    }
+}
+
+pub struct Poseidon2UtxoNullifier;
+
+global UTXO_NULLIFY_DOMAIN_TAG: Field = Field::from_le_bytes([5, 6, 7, 8, 9]);
+
+impl UtxoNullifier for Poseidon2UtxoNullifier {
+    fn nullify(utxo: Utxo, sk: SecretKey) -> Field {
+        // Initialize hasher
+        let mut hasher = Poseidon2Hasher::default();
+        hasher.write(UTXO_NULLIFY_DOMAIN_TAG);
+        // Absorb pre-UTXO data
+        hasher.write(utxo.commitment);
+        hasher.write(sk.lo);
+        hasher.write(sk.hi);
+
+        hasher.finish()
     }
 }
