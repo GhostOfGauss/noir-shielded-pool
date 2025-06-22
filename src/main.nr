@@ -1,4 +1,5 @@
-use transaction::{Transaction, TransactionPost};
+// use transaction::{Transaction, TransactionPost};
+use utxo::{PreUtxo, Utxo};
 
 mod accumulator;
 mod asset;
@@ -6,8 +7,12 @@ mod keypair;
 mod transaction;
 mod utxo;
 
-fn main(tx: Transaction) -> pub TransactionPost {
-    TransactionPost::new(tx)
+// fn main(tx: Transaction) -> pub TransactionPost {
+//     TransactionPost::new(tx)
+// }
+
+fn main(pre: PreUtxo) -> pub Utxo {
+    Utxo::new(pre)
 }
 
 // #[test]

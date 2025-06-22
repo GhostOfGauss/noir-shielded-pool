@@ -1,0 +1,26 @@
+Compiled ACIR for circuit computing UTXO commitment from pre-UTXO and returning:
+func 0
+current witness index : _19
+private parameters indices : [_0, _1, _2, _3, _4, _5]
+_0: // asset.id
+_1: // asset.amount
+_2: // pk.x
+_3: // pk.y
+_4: // pk.is_infinite
+_5: // randomness
+public parameters indices : []
+return value indices : [_6] // UTXO commitment value
+BLACKBOX::RANGE [(_4, 1)] [] // Check pk.is_infinite bool
+EXPR [ (-1, _7) 17230332160 ] // _7: Probably global domain tag value
+EXPR [ (-1, _8) 110680464442257309696 ] // _8: ? Poseidon const?
+BLACKBOX::POSEIDON2_PERMUTATION [(_7, 254), (_0, 254), (_1, 254), (_8, 254)] [_9, _10, _11, _12]
+EXPR [ (1, _2) (1, _9) (-1, _13) 0 ] // absorb pk.x
+EXPR [ (1, _3) (1, _10) (-1, _14) 0 ] // absorb pk.y
+EXPR [ (1, _5) (1, _11) (-1, _15) 0 ] // absorb randomness
+BLACKBOX::POSEIDON2_PERMUTATION [(_13, 254), (_14, 254), (_15, 254), (_12, 254)] [_16, _17, _18, _19]
+EXPR [ (1, _6) (-1, _16) 0 ] // Copy slot 0 of poseidon state to return var
+
+
+[shielded_pool] Circuit witness successfully solved
+[shielded_pool] Witness saved to target/shielded_pool.gz
+[shielded_pool] Circuit output: Struct({"commitment": Field(-4628648454311255700682026396879138549671916027026719544507845352809100634007)})
