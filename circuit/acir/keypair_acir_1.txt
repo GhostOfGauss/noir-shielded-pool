@@ -1,8 +1,8 @@
 Compiled ACIR for main (unoptimized):
 func 0
 current witness index : _7
-private parameters indices : [_0, _1]
-public parameters indices : []
+private parameters indices : []
+public parameters indices : [_0, _1]
 return value indices : [_2, _3, _4]
 BLACKBOX::MULTI_SCALAR_MUL [(1, 254), (17631683881184975370165255887551781615748388533673675138860, 254), (0, 1), (_0, 254), (_1, 254)] [_5, _6, _7]
 EXPR [ (1, _2) (-1, _5) 0 ]
@@ -13,3 +13,5 @@ EXPR [ (1, _4) (-1, _7) 0 ]
 [shielded_pool] Circuit witness successfully solved
 [shielded_pool] Witness saved to target/shielded_pool.gz
 [shielded_pool] Circuit output: Struct({"is_infinite": Field(0), "x": Field(3078034153852398078128400807926804309327113743808504829582559963737223069694), "y": Field(-9191351987198133172789796342745422989482268917117950487758512501574271532885)})
+// sk: "hi": 0, "lo": 2
+// pk: "x": 0x6ce1b0827aafa85ddeb49cdaa36306d19a74caa311e13d46d8bc688cdbffffe, "y": 0x1c122f81a3a14964909ede0ba2a6855fc93faf6fa1a788bf467be7e7a43f80ac

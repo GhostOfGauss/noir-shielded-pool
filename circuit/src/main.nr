@@ -1,7 +1,6 @@
 use merkle::{MerkleInclusionPath, MerkleTree};
-use accumulator::Accumulator;
-use utxo::Utxo;
-use asset::{Asset, assert_balanced_tx};
+use utxo::{PreUtxo,Utxo};
+use keypair::{SecretKey,Keypair, PublicKey};
 
 type Transaction = transaction::Transaction<Field, MerkleInclusionPath>;
 type TransactionPost = transaction::TransactionPost<Field>;
@@ -18,8 +17,13 @@ mod utxo;
 //     TransactionPost::new(utxo_accumulator, tx)
 // }
 
-fn main(inputs: [Asset; 2], outputs: [Asset; 2]) {
-    assert_balanced_tx(inputs, outputs);
+// fn main(pre: PreUtxo) -> pub Utxo {
+//     Utxo::new(pre)
+// }
+
+fn main(sk: pub SecretKey) -> pub PublicKey {
+    let pair = Keypair::new(sk);
+    pair.public
 }
 
 // #[test]

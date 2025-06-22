@@ -1,0 +1,17 @@
+Compiled ACIR for main (unoptimized):
+func 0
+current witness index : _7
+private parameters indices : []
+public parameters indices : [_0, _1]
+return value indices : [_2, _3, _4]
+BLACKBOX::MULTI_SCALAR_MUL [(1, 254), (17631683881184975370165255887551781615748388533673675138860, 254), (0, 1), (_0, 254), (_1, 254)] [_5, _6, _7]
+EXPR [ (1, _2) (-1, _5) 0 ]
+EXPR [ (1, _3) (-1, _6) 0 ]
+EXPR [ (1, _4) (-1, _7) 0 ]
+
+
+[shielded_pool] Circuit witness successfully solved
+[shielded_pool] Witness saved to target/shielded_pool.gz
+[shielded_pool] Circuit output: Struct({"is_infinite": Field(0), "x": Field(-3227352362257037263902424173275354266044964400219754872043023745437788450996), "y": Field(8902249110305491597038405103722863701255802573786510474664632793109847672620)})
+// sk: "hi": 0, "lo": 3
+// pk: "x": 0x2941b0928df1b9480273773b36397da3e495430a2a7a3857661bc7a446c94f4d, "y": 0x13ae7e938c892308bef0f45ee7386daa2d3b447349a7d0a11b5aa4cfbe69072c
