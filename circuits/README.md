@@ -19,6 +19,10 @@ To produce IR use
 ```sh
 nargo execute --print-acir > main_acir.txt
 ```
+For logging to display use
+```sh
+ nargo execute --debug-comptime-in-file shielded_pool/src/main.nr
+ ```
 
 ### Prove
 (with Barretenberg defaults:)
