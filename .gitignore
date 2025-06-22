@@ -1,3 +1,7 @@
 target/
 Prover.toml
 main_acir.txt
+
+node_modules/
+dist/
+.tsbuildinfo
