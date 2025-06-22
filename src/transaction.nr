@@ -1,4 +1,4 @@
-use crate::accumulator::{UtxoAccumulator, UtxoAccumulatorRoot, UtxoInclusionWitness};
+use crate::accumulator::Accumulator;
 use crate::asset::assert_balanced_tx;
 use crate::keypair::{Keypair, SecretKey};
 use crate::utxo::{PreUtxo, Utxo};
@@ -6,17 +6,20 @@ use crate::utxo::{PreUtxo, Utxo};
 /// The public data of the tx, posted
 /// to the public ledger together with
 /// the ZKP of tx validity.
-pub struct TransactionPost {
+pub struct TransactionPost<R> {
     outgoing_utxos: [Utxo; 2],
     incoming_nullifiers: [Field; 2],
-    accumulator_root: UtxoAccumulatorRoot,
+    accumulator_root: R,
 }
 
-impl TransactionPost {
+impl<R> TransactionPost<R> {
     /// Produce a `TransactionPost` from raw `Transaction`
     /// data. This function enforces all private (i.e. in-circuit)
     /// transfer validity constraints.
-    pub fn new(tx: Transaction) -> Self {
+    pub fn new<A, W>(tx: Transaction<A, W>) -> Self
+    where
+        A: Accumulator<Item = Utxo, Root = R, Witness = W>,
+    {
         // Asset balance
         assert_balanced_tx(
             tx.incoming_pre_utxos.map(|pre| pre.asset),
@@ -29,7 +32,7 @@ impl TransactionPost {
 
         // Incoming UTXO existence
         incoming_utxos.for_eachi(|i, utxo| {
-            tx.utxo_accumulator.contains(utxo, tx.incoming_utxo_inclusions[i])
+            tx.utxo_accumulator.contains(utxo, tx.utxo_inclusion_witness[i])
         });
 
         // Incoming UTXO ownership
@@ -45,10 +48,10 @@ impl TransactionPost {
 
 /// All data required to construct a transaction,
 /// known only to the Sender.
-pub struct Transaction {
+pub struct Transaction<A, W> {
     incoming_pre_utxos: [PreUtxo; 2],
     outgoing_pre_utxos: [PreUtxo; 2],
     spender_sk: SecretKey,
-    utxo_accumulator: UtxoAccumulator,
-    incoming_utxo_inclusions: [UtxoInclusionWitness; 2],
+    utxo_accumulator: A,
+    utxo_inclusion_witness: [W; 2],
 }
