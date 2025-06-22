@@ -1,6 +1,6 @@
 use crate::accumulator::Accumulator;
 use crate::utxo::Utxo;
-use poseidon::poseidon2::Poseidon2Hasher;
+use poseidon::poseidon::PoseidonHasher;
 use std::{default::Default, hash::Hasher};
 use trees::merkle::{MembershipProver, MerkleTree as ZkKitMerkleTree, MT_Creator};
 
@@ -43,13 +43,15 @@ impl Accumulator for MerkleTree {
     }
 }
 
-global MERKLE_TREE_HASHER_DOMAIN_TAG: Field = Field::from_le_bytes([10, 11, 12, 13, 14]);
+// global MERKLE_TREE_HASHER_DOMAIN_TAG: Field = Field::from_le_bytes([10, 11, 12, 13, 14]);
 
 fn merkle_tree_poseidon2_hasher(leaves: [Field; 2]) -> Field {
     // Initialize hasher
-    let mut hasher = Poseidon2Hasher::default();
-    hasher.write(MERKLE_TREE_HASHER_DOMAIN_TAG);
+    let mut hasher = PoseidonHasher::default();
+    // hasher.write(MERKLE_TREE_HASHER_DOMAIN_TAG); // omitted for compatibility with zk-kit
     hasher.write(leaves[0]);
     hasher.write(leaves[1]);
-    hasher.finish()
+    let result = hasher.finish();
+    println(f"Poseidon hash result {result}");
+    result
 }

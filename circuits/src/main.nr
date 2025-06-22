@@ -1,4 +1,6 @@
 use merkle::{MerkleInclusionPath, MerkleTree};
+use accumulator::Accumulator;
+use utxo::Utxo;
 
 type Transaction = transaction::Transaction<Field, MerkleInclusionPath>;
 type TransactionPost = transaction::TransactionPost<Field>;
@@ -10,9 +12,15 @@ mod merkle;
 mod transaction;
 mod utxo;
 
-fn main(tx: Transaction) -> pub TransactionPost {
-    let utxo_accumulator = MerkleTree::from_root(tx.utxo_accumulator_root);
-    TransactionPost::new(utxo_accumulator, tx)
+// fn main(tx: Transaction) -> pub TransactionPost {
+//     let utxo_accumulator = MerkleTree::from_root(tx.utxo_accumulator_root);
+//     TransactionPost::new(utxo_accumulator, tx)
+// }
+
+fn main(utxo: Utxo, path: MerkleInclusionPath, root: pub Field) {
+    let tree = MerkleTree::from_root(root);
+    println(f"root: {root}");
+    tree.contains(utxo, path);
 }
 
 // #[test]

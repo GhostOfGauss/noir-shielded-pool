@@ -1,5 +1,6 @@
 import { IMT } from "@zk-kit/imt";
 import { poseidon2 } from "poseidon-lite";
+import { stringifyWithBigInts } from "./utils";
 
 const depth = 10;
 const zeroValue = 0;
@@ -16,11 +17,9 @@ console.log(`Current root: ${tree.root}`);
 
 const proof = tree.createProof(0);
 console.log(`Proof for index 0: ${stringifyWithBigInts(proof)}`);
+tree.verifyProof(proof);
 
-function stringifyWithBigInts(obj: any, space = 2) {
-  return JSON.stringify(
-    obj,
-    (_key, value) => (typeof value === "bigint" ? value.toString() : value),
-    space
-  );
-}
+// DEBUGGING
+// Produces TSC error but the JS can be executed if you need to see the inner nodes
+// console.log(`tree nodes[0] ${tree._nodes[0]}`);
+// console.log(`tree nodes[1] ${stringifyWithHexBigInts(tree._nodes[1])}`);
