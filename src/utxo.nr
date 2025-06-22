@@ -18,18 +18,26 @@ pub struct Utxo {
     commitment: Field,
 }
 
-pub fn default_utxo_commit(pre: PreUtxo) -> Field {
-    <DummyUtxoCommitment as UtxoCommitment>::commit(pre)
-}
-
-pub trait UtxoCommitment {
-    fn commit(pre: PreUtxo) -> Field;
-}
-
 impl Utxo {
     pub fn new(pre: PreUtxo) -> Self {
         Self { commitment: default_utxo_commit(pre) }
     }
+
+    pub fn nullify(self, sk: SecretKey) -> Field {
+        default_utxo_nullifier(self, sk)
+    }
+}
+
+pub fn default_utxo_commit(pre: PreUtxo) -> Field {
+    <DummyUtxoCommitment as UtxoCommitment>::commit(pre)
+}
+
+pub fn default_utxo_nullifier(utxo: Utxo, sk: SecretKey) -> Field {
+    <DummyUtxoNullifier as UtxoNullifier>::nullify(utxo, sk)
+}
+
+pub trait UtxoCommitment {
+    fn commit(pre: PreUtxo) -> Field;
 }
 
 // Placeholder for proper cryptographic commitment
