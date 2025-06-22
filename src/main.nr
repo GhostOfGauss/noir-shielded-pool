@@ -1,5 +1,6 @@
 use keypair::{Keypair, PublicKey, SecretKey};
 
+mod accumulator;
 mod asset;
 mod keypair;
 mod utxo;
