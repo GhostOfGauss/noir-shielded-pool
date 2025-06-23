@@ -4,6 +4,9 @@ import { PublicKey, SecretKey } from "../keypair";
 import { PreUtxo, Utxo } from "../utxo";
 import { MerkleTree } from "../merkle";
 import { Transaction, TransactionPost } from "../transaction";
+import { UltraHonkBackend } from "@aztec/bb.js";
+import { Noir } from "@noir-lang/noir_js";
+import circuit from "../../../circuit/target/shielded_pool.json";
 
 const sampleAsset = new Asset(1, 3);
 
@@ -96,21 +99,83 @@ describe("Merkle Tree", () => {
   });
 });
 
-describe("Transaction", () => {
-  it("Forms Transaction Post", () => {
-    const tx = new Transaction(
+describe("Transaction", async () => {
+  let tx: Transaction;
+
+  beforeEach(() => {
+    tx = new Transaction(
       incomingPreUtxos,
       outgoingPreUtxos,
       senderSk,
       utxoAccumulatorRoot,
       incomingUtxoInclusionWitnesses
     );
+  });
+
+  it("Forms Transaction Post", () => {
     const txPost = new TransactionPost(tx, utxoAccumulator);
-    console.log(
-      `Transaction: ${JSON.stringify(tx.toCircuitInput(), undefined, 2)}`
+    // console.log(
+    //   `Transaction: ${JSON.stringify(tx.toCircuitInput(), undefined, 2)}`
+    // );
+    // console.log(
+    //   `Transaction Post: ${JSON.stringify(txPost.toCircuitInput(), undefined, 2)}`
+    // );
+  });
+
+  it("Proves transaction validity", async function () {
+    this.timeout(20000);
+
+    const txPost = new TransactionPost(tx, utxoAccumulator);
+
+    // Type-widening bug causes tsc to misinterpret
+    // AbiType { "kind": "field" } as { kind: string }
+    // @ts-ignore
+    const noir = new Noir(circuit);
+    const backend = new UltraHonkBackend(circuit.bytecode);
+
+    const witnessStart = performance.now();
+    const { witness, returnValue } = await noir.execute({
+      tx: tx.toCircuitInput(),
+    });
+    const witnessEnd = performance.now();
+    console.log(`Witness Generation took ${witnessEnd - witnessStart}ms`);
+    // console.log(
+    //   `circuit returns: ${JSON.stringify(returnValue, undefined, 2)}`
+    // );
+
+    // TODO: clunky comparison
+    // @ts-ignore
+    expect(BigInt(returnValue.accumulator_root)).to.equal(
+      txPost.accumulatorRoot
     );
-    console.log(
-      `Transaction Post: ${JSON.stringify(txPost.toCircuitInput(), undefined, 2)}`
+    // @ts-ignore
+    expect(BigInt(returnValue.incoming_nullifiers[0])).to.equal(
+      txPost.incomingNullifiers[0]
     );
+    // @ts-ignore
+    expect(BigInt(returnValue.incoming_nullifiers[1])).to.equal(
+      txPost.incomingNullifiers[1]
+    );
+    // @ts-ignore
+    expect(BigInt(returnValue.outgoing_utxos[0].commitment)).to.equal(
+      txPost.outgoingUtxos[0].commitment
+    );
+    // @ts-ignore
+    expect(BigInt(returnValue.outgoing_utxos[1].commitment)).to.equal(
+      txPost.outgoingUtxos[1].commitment
+    );
+
+    const proofStart = performance.now();
+    const proof = await backend.generateProof(witness);
+    const proofEnd = performance.now();
+    console.log(`Proof Generation took ${proofEnd - proofStart}ms`);
+
+    const valid = await backend.verifyProof(proof);
+    if (!valid) {
+      throw "Invalid proof was generated";
+    }
+    console.log(`Proof is valid`);
+
+    backend.destroy();
   });
 });
