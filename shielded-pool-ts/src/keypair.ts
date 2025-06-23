@@ -24,6 +24,14 @@ export class PublicKey {
     // TODO: check well-constructed
   }
 
+  toCircuitInput() {
+    return {
+      x: this.x.toString(),
+      y: this.y.toString(),
+      is_infinite: this.is_infinite,
+    };
+  }
+
   /**
    * Derive public key from secret key
    * by multiplying generator point.

@@ -25,23 +25,19 @@ const incomingPk = new PublicKey(
   false
 );
 
-const randomness: string = "0x2";
+const randomness: bigint = BigInt(10);
 
-const incomingPreUtxos: PreUtxo[] = incomingAssets.map((asset) => {
-  return {
-    asset,
-    pk: incomingPk,
-    randomness,
-  };
-});
+const incomingPreUtxos: PreUtxo[] = incomingAssets.map(
+  (asset) => new PreUtxo(asset, incomingPk, randomness)
+);
 
 const incomingUtxos: Utxo[] = incomingPreUtxos.map((pre) => new Utxo(pre));
 
 const circuitInputs = {
-  sk: incomingSk.toCircuitInput(),
+  pre: incomingPreUtxos[0].toCircuitInputs(),
 };
 
-const expectedReturn = incomingPk;
+// const expectedReturn = incomingPk;
 
 async function main() {
   const witnessStart = performance.now();

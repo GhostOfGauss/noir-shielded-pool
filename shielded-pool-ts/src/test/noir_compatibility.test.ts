@@ -19,6 +19,7 @@ describe("Utxo commitment", () => {
   it(`Should form same UTXO as Noir`, async () => {
     const preUtxo = new PreUtxo(sampleAsset, samplePk, sampleRandomness);
     const utxo = new Utxo(preUtxo);
+    console.log(`Utxo commitment: ${utxo.commitment.toString()}`);
     const expectedUtxoCommitment = BigInt(
       "0x2d6c579e6547d5a4c6ff9cab55c183a82024f1c4b6ef12b6d871cfe608b22a0c"
     );
