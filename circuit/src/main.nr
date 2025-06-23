@@ -17,13 +17,13 @@ mod utxo;
 //     TransactionPost::new(utxo_accumulator, tx)
 // }
 
-fn main(pre: PreUtxo) -> pub Utxo {
-    Utxo::new(pre)
-}
-
-// fn main(utxo: Utxo, sk: SecretKey) -> pub Field {
-//     utxo.nullify(sk)
+// fn main(pre: PreUtxo) -> pub Utxo {
+//     Utxo::new(pre)
 // }
+
+fn main(utxo: Utxo, sk: SecretKey) -> pub Field {
+    utxo.nullify(sk)
+}
 
 // #[test]
 // fn test_main() {

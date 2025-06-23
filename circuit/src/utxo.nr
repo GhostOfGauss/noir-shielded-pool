@@ -36,11 +36,11 @@ impl Utxo {
 }
 
 pub fn default_utxo_commit(pre: PreUtxo) -> Field {
-    <Poseidon2UtxoCommitment as UtxoCommitment>::commit(pre)
+    <PoseidonUtxoCommitment as UtxoCommitment>::commit(pre)
 }
 
 pub fn default_utxo_nullifier(utxo: Utxo, sk: SecretKey) -> Field {
-    <Poseidon2UtxoNullifier as UtxoNullifier>::nullify(utxo, sk)
+    <PoseidonUtxoNullifier as UtxoNullifier>::nullify(utxo, sk)
 }
 
 pub trait UtxoCommitment {
@@ -59,12 +59,12 @@ impl UtxoCommitment for DummyUtxoCommitment {
 
 /// Use Poseidon2 hasher to commit to
 /// pre-UTXO data.
-pub struct Poseidon2UtxoCommitment;
+pub struct PoseidonUtxoCommitment;
 
 // TODO: removed for easier compatibility with TS implementation
 // global UTXO_COMMIT_DOMAIN_TAG: Field = Field::from_le_bytes([0, 1, 2, 3, 4]);
 
-impl UtxoCommitment for Poseidon2UtxoCommitment {
+impl UtxoCommitment for PoseidonUtxoCommitment {
     fn commit(pre: PreUtxo) -> Field {
         // Initialize hasher
         let mut hasher = PoseidonHasher::default();
@@ -95,15 +95,16 @@ impl UtxoNullifier for DummyUtxoNullifier {
     }
 }
 
-pub struct Poseidon2UtxoNullifier;
+pub struct PoseidonUtxoNullifier;
 
-global UTXO_NULLIFY_DOMAIN_TAG: Field = Field::from_le_bytes([5, 6, 7, 8, 9]);
+// TODO: removed for easier compatibility with TS implementation
+// global UTXO_NULLIFY_DOMAIN_TAG: Field = Field::from_le_bytes([5, 6, 7, 8, 9]);
 
-impl UtxoNullifier for Poseidon2UtxoNullifier {
+impl UtxoNullifier for PoseidonUtxoNullifier {
     fn nullify(utxo: Utxo, sk: SecretKey) -> Field {
         // Initialize hasher
         let mut hasher = PoseidonHasher::default();
-        hasher.write(UTXO_NULLIFY_DOMAIN_TAG);
+        // hasher.write(UTXO_NULLIFY_DOMAIN_TAG);
         // Absorb pre-UTXO data
         hasher.write(utxo.commitment);
         hasher.write(sk.lo);

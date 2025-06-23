@@ -1,0 +1,6 @@
+[sk]
+hi = "0"
+lo = "2"
+
+[utxo]
+commitment = "0x2783b1b42583d50c8790f0cc009663c8f5663c35c6bd0af694f483ea8efa4573"

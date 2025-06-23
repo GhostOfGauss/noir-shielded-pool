@@ -33,7 +33,8 @@ const incomingPreUtxos: PreUtxo[] = incomingAssets.map(
 const incomingUtxos: Utxo[] = incomingPreUtxos.map((pre) => new Utxo(pre));
 
 const circuitInputs = {
-  pre: incomingPreUtxos[0].toCircuitInputs(),
+  utxo: incomingUtxos[0].toCircuitInput(),
+  sk: incomingSk.toCircuitInput(),
 };
 
 // const expectedReturn = incomingPk;

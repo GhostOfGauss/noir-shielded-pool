@@ -1,6 +1,6 @@
 import { Asset } from "./asset";
-import { PublicKey } from "./keypair";
-import { poseidon5 } from "poseidon-lite";
+import { PublicKey, SecretKey } from "./keypair";
+import { poseidon3, poseidon5 } from "poseidon-lite";
 
 export class PreUtxo {
   constructor(
@@ -9,7 +9,7 @@ export class PreUtxo {
     public randomness: bigint
   ) {}
 
-  toCircuitInputs() {
+  toCircuitInput() {
     return {
       asset: this.asset.toCircuitInput(),
       pk: this.pk.toCircuitInput(),
@@ -22,11 +22,14 @@ export class Utxo {
   commitment: bigint;
 
   constructor(pre: PreUtxo) {
-    // TODO: Domain tags
     this.commitment = utxoCommitment(pre);
   }
 
-  toCircuitInputs() {
+  nullify(sk: SecretKey): bigint {
+    return utxoNullify(this, sk);
+  }
+
+  toCircuitInput() {
     return {
       commitment: this.commitment.toString(),
     };
@@ -35,6 +38,7 @@ export class Utxo {
 
 // See circuit/src/utxo.nr
 export function utxoCommitment(pre: PreUtxo): bigint {
+  // TODO: Domain tags
   return poseidon5([
     pre.asset.id,
     pre.asset.amount,
@@ -42,4 +46,10 @@ export function utxoCommitment(pre: PreUtxo): bigint {
     pre.pk.y,
     pre.randomness,
   ]);
+}
+
+// See circuit/src/utxo.nr
+export function utxoNullify(utxo: Utxo, sk: SecretKey): bigint {
+  // TODO: Domain tags
+  return poseidon3([utxo.commitment, sk.lo, sk.hi]);
 }

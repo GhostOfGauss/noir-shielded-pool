@@ -24,7 +24,7 @@ describe("UTXO", () => {
   });
 
   it(`Noir UTXO commitment compatibility`, () => {
-    console.log(`Utxo commitment: ${utxo.commitment.toString()}`);
+    console.log(`Utxo commitment: ${utxo.commitment.toString(16)}`);
     const expectedUtxoCommitment = BigInt(
       "0x2783b1b42583d50c8790f0cc009663c8f5663c35c6bd0af694f483ea8efa4573"
     );
@@ -33,9 +33,9 @@ describe("UTXO", () => {
 
   it(`Noir UTXO nullifier compatibility`, () => {
     let nullifier = utxo.nullify(sampleSk);
-    console.log(`computed nullifier: ${nullifier.toString()}`);
+    console.log(`computed nullifier: ${nullifier.toString(16)}`);
     const expectedUtxoNulifier = BigInt(
-      "0x1950926c87a8ddc8a3d056723a51e729794bcd1c02eb072a14e2a0001299e53d"
+      "0x2ec3fae46ba68ecb1de2050a46f706b607cf5ccb309055e0b9021cb927c5b4c1"
     );
     expect(nullifier === expectedUtxoNulifier).to.equal(true);
   });
