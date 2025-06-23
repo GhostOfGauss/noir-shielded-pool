@@ -1,13 +1,15 @@
 # Noir UTXO Shielded Pool
+Noir circuit for proving the validity of a transaction in a shielded pool (see spec).
 
 ## Compile / Prove / Verify
 ### Produce `Prover.toml`
 ```sh
-nargo check
-```
-or
-```sh
 nargo check --overwrite
+```
+
+### Produce ABI
+```sh
+nargo compile
 ```
 
 ### Generate witness:
@@ -17,7 +19,7 @@ nargo execute
 ```
 To produce IR use
 ```sh
-nargo execute --print-acir > main_acir.txt
+nargo execute --print-acir > acir/main_acir.txt
 ```
 For logging to display use
 ```sh
@@ -34,7 +36,7 @@ bb prove -b ./target/shielded_pool.json -w ./target/shielded_pool.gz -o ./target
 ```sh
 bb write_vk -b ./target/shielded_pool.json -o ./target 2>&1 | tee vk_gen.log
 ```
-(save output to track circuit size)
+(output contains circuit size)
 
 ### Verify
 ```sh

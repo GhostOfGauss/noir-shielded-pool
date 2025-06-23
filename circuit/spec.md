@@ -1,5 +1,8 @@
 # UTXO Shielded Pool "Spec"
-(More a "description" than a "spec", really)
+(Really more of a description than a spec.)
+
+### Acknowledgements
+This is essentially a simplification of the [MantaPay spec](https://github.com/Manta-Network/spec/blob/main/manta-pay/spec.pdf), which takes many of its ideas from the [Zcash spec](https://zips.z.cash/protocol/protocol.pdf).
 
 # Protocol
 Shielded pool enables creation of UTXOs without revealing their underlying asset or owner, nor which UTXOs were consumed to allow their creation.
@@ -14,11 +17,11 @@ Assets are considered *equal* if they are of the same type and same amount.
 
 ## Keypair
 
-TODO: Use embedded curve defined over the proof system scalar field so that curve arith. is native. This means sk is from embedded curve scalar field, i.e. is represented non-natively
-
-A `Keypair` consists of a (`SecretKey`, `PublicKey`) pair. The `SecretKey` will be modeled as a field element $\mathsf{sk} \in \mathbb{F}$ and the `PublicKey` is an elliptic curve point defined by
+A `Keypair` consists of a (`SecretKey`, `PublicKey`) pair. The `SecretKey` will be modeled as a field element $\mathsf{sk} \in \mathbb{F}_\mathsf{emb}$ and the `PublicKey` is an elliptic curve point defined by
 $$ \mathsf{pk} = \mathsf{sk} \cdot g$$
-where $g \in \mathbb{G}$ generates the subgroup of order $| \mathbb{F} |$.
+where $g \in \mathbb{G}_\mathsf{emb}$ generates the subgroup of order $| \mathbb{F}\mathsf{emb} |$.
+
+Here $\mathbb{F}_\mathsf{emb}$ and $\mathbb{G}_\mathsf{emb}$ refer to the *embedded* scalar field and elliptic curves. That is, the proof system constraint field $\mathbb{F}$ is the base field of $\mathbb{G}_\mathsf{emb}$. This choice allows the constraint system to natively represent elliptic curve operations, at the expense of having to represent embedded field scalars such as $\mathsf{sk}$ non-natively (*e.g.* as "hi" and "lo" limbs).
 
 TODO:
 - ephemeral secret keys
@@ -120,7 +123,7 @@ The circuit's statement is the union of:
 ## TODO: Encrypted Message
 - required to transmit the output UTXO randomness to the Receiver, else tx's become unspendable
 
-# Cryptography
+# Cryptography (TODO)
 - Commitment functions
     - UTXO commitment: curve to field hashing
     - Nullifier commitment

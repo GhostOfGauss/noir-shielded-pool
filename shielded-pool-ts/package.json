@@ -1,6 +1,7 @@
 {
   "name": "shielded-pool-ts",
   "version": "0.0.1",
+  "author": "Todd Norton",
   "main": "dist",
   "types": "dist",
   "license": "MIT",
