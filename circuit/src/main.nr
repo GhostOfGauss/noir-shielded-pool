@@ -1,5 +1,6 @@
 use merkle::{MerkleInclusionPath, MerkleTree};
 use utxo::{PreUtxo,Utxo};
+use keypair::SecretKey;
 
 type Transaction = transaction::Transaction<Field, MerkleInclusionPath>;
 type TransactionPost = transaction::TransactionPost<Field>;
@@ -19,6 +20,10 @@ mod utxo;
 fn main(pre: PreUtxo) -> pub Utxo {
     Utxo::new(pre)
 }
+
+// fn main(utxo: Utxo, sk: SecretKey) -> pub Field {
+//     utxo.nullify(sk)
+// }
 
 // #[test]
 // fn test_main() {

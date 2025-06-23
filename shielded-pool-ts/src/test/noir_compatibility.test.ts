@@ -15,14 +15,28 @@ const samplePk = new PublicKey(
 
 const sampleRandomness = BigInt(10);
 
-describe("Utxo commitment", () => {
-  it(`Should form same UTXO as Noir`, async () => {
+describe("UTXO", () => {
+  let utxo: Utxo;
+
+  beforeEach(() => {
     const preUtxo = new PreUtxo(sampleAsset, samplePk, sampleRandomness);
-    const utxo = new Utxo(preUtxo);
+    utxo = new Utxo(preUtxo);
+  });
+
+  it(`Noir UTXO commitment compatibility`, () => {
     console.log(`Utxo commitment: ${utxo.commitment.toString()}`);
     const expectedUtxoCommitment = BigInt(
-      "0x2d6c579e6547d5a4c6ff9cab55c183a82024f1c4b6ef12b6d871cfe608b22a0c"
+      "0x2783b1b42583d50c8790f0cc009663c8f5663c35c6bd0af694f483ea8efa4573"
     );
-    expect(utxo.commitment === expectedUtxoCommitment);
+    expect(utxo.commitment === expectedUtxoCommitment).to.equal(true);
+  });
+
+  it(`Noir UTXO nullifier compatibility`, () => {
+    let nullifier = utxo.nullify(sampleSk);
+    console.log(`computed nullifier: ${nullifier.toString()}`);
+    const expectedUtxoNulifier = BigInt(
+      "0x1950926c87a8ddc8a3d056723a51e729794bcd1c02eb072a14e2a0001299e53d"
+    );
+    expect(nullifier === expectedUtxoNulifier).to.equal(true);
   });
 });

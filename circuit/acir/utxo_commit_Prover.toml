@@ -1,0 +1,11 @@
+[pre]
+randomness = "10"
+
+[pre.asset]
+amount = "3"
+id = "1"
+
+[pre.pk]
+is_infinite = "0"
+x = "0x6ce1b0827aafa85ddeb49cdaa36306d19a74caa311e13d46d8bc688cdbffffe"
+y = "0x1c122f81a3a14964909ede0ba2a6855fc93faf6fa1a788bf467be7e7a43f80ac"
