@@ -1,6 +1,7 @@
-use merkle::{MerkleInclusionPath, MerkleTree};
-use utxo::{PreUtxo,Utxo};
+use accumulator::Accumulator;
 use keypair::SecretKey;
+use merkle::{MerkleInclusionPath, MerkleTree};
+use utxo::{PreUtxo, Utxo};
 
 type Transaction = transaction::Transaction<Field, MerkleInclusionPath>;
 type TransactionPost = transaction::TransactionPost<Field>;
@@ -21,8 +22,14 @@ mod utxo;
 //     Utxo::new(pre)
 // }
 
-fn main(utxo: Utxo, sk: SecretKey) -> pub Field {
-    utxo.nullify(sk)
+// fn main(utxo: Utxo, sk: SecretKey) -> pub Field {
+//     utxo.nullify(sk)
+// }
+
+fn main(utxo: Utxo, path: MerkleInclusionPath, root: pub Field) {
+    let tree = MerkleTree::from_root(root);
+    println(f"root: {root}");
+    tree.contains(utxo, path);
 }
 
 // #[test]

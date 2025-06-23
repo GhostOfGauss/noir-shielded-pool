@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { Asset } from "../asset";
 import { PublicKey, SecretKey } from "../keypair";
 import { PreUtxo, Utxo } from "../utxo";
+import { MerkleTree } from "../merkle";
 
 const sampleAsset = new Asset(1, 3);
 
@@ -24,7 +25,7 @@ describe("UTXO", () => {
   });
 
   it(`Noir UTXO commitment compatibility`, () => {
-    console.log(`Utxo commitment: ${utxo.commitment.toString(16)}`);
+    console.log(`Utxo commitment: 0x${utxo.commitment.toString(16)}`);
     const expectedUtxoCommitment = BigInt(
       "0x2783b1b42583d50c8790f0cc009663c8f5663c35c6bd0af694f483ea8efa4573"
     );
@@ -33,10 +34,52 @@ describe("UTXO", () => {
 
   it(`Noir UTXO nullifier compatibility`, () => {
     let nullifier = utxo.nullify(sampleSk);
-    console.log(`computed nullifier: ${nullifier.toString(16)}`);
+    console.log(`computed nullifier: 0x${nullifier.toString(16)}`);
     const expectedUtxoNulifier = BigInt(
       "0x2ec3fae46ba68ecb1de2050a46f706b607cf5ccb309055e0b9021cb927c5b4c1"
     );
     expect(nullifier === expectedUtxoNulifier).to.equal(true);
+  });
+});
+
+describe("Merkle Tree", () => {
+  let tree: MerkleTree;
+  let root: bigint;
+  const leaves = [
+    BigInt(
+      "0x2783b1b42583d50c8790f0cc009663c8f5663c35c6bd0af694f483ea8efa4573"
+    ), // Asset(1, 3), samplePk, randomness = 10
+    BigInt(
+      "0x288a83c2c52b110e3785f5f5432a0e526f9b4f025d9ea59d9ce52980df8d3883"
+    ), // Asset(1, 4), samplePk, randomness = 10
+    BigInt(
+      "0x1119ec7a973793011d29dd08373624333c9c2fbb93ace50565b407443dd1f96c"
+    ), // Asset(1, 5), samplePk, randomness = 10
+    BigInt(
+      "0x15b24cfbce3b86b8222034a5cc10739d30f97c6ce1fd8edaf1f57e216014bf6c"
+    ), // Asset(1, 6), samplePk, randomness = 20
+    BigInt("0x5e408b891d6077f2193f47b08ce81cb83279c656a84afba118646f8ac2991fa"), // Asset(1, 7), samplePk, randomness = 10
+  ];
+
+  beforeEach(() => {
+    tree = new MerkleTree();
+    leaves.map((leaf) => tree.insert(leaf));
+    root = tree.root();
+    console.log(`Merkle root: 0x${root.toString(16)}`);
+  });
+
+  it("Checks inclusion proofs", () => {
+    leaves.map((leaf, i) => {
+      const proof = tree.createProof(i);
+      expect(tree.verifyProof(proof)).to.equal(true);
+      expect(proof.root).to.equal(root);
+      expect(proof.leaf).to.equal(leaf);
+      expect(proof.leafIndex).to.equal(i);
+      // console.log(`Proof indexes packed: ${proof.indexes}`);
+      // console.log(`Proof indexes: ${proof.toIMTMerkleProof().pathIndices}`);
+      // console.log(
+      //   `Proof ${JSON.stringify(proof.toCircuitInput(), undefined, 2)}`
+      // );
+    });
   });
 });

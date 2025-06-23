@@ -6055,16 +6055,16 @@ unconstrained func 1
 unconstrained func 2
 [Const { destination: Direct(5), bit_size: Integer(U32), value: 0 }, Const { destination: Direct(6), bit_size: Integer(U32), value: 1 }, Const { destination: Direct(7), bit_size: Integer(U32), value: 3 }, CalldataCopy { destination_address: Direct(0), size_address: Direct(7), offset_address: Direct(5) }, Cast { destination: Direct(1), source: Direct(1), bit_size: Integer(U32) }, Const { destination: Direct(9), bit_size: Integer(U32), value: 10 }, BinaryIntOp { destination: Direct(7), op: Add, bit_size: U32, lhs: Direct(9), rhs: Direct(1) }, BinaryFieldOp { destination: Direct(3), op: IntegerDiv, lhs: Direct(0), rhs: Direct(2) }, BinaryFieldOp { destination: Direct(4), op: Mul, lhs: Direct(3), rhs: Direct(2) }, BinaryFieldOp { destination: Direct(4), op: Sub, lhs: Direct(0), rhs: Direct(4) }, Store { destination_pointer: Direct(9), source: Direct(4) }, BinaryIntOp { destination: Direct(9), op: Add, bit_size: U32, lhs: Direct(9), rhs: Direct(6) }, Mov { destination: Direct(0), source: Direct(3) }, BinaryIntOp { destination: Direct(8), op: LessThan, bit_size: U32, lhs: Direct(9), rhs: Direct(7) }, JumpIf { condition: Direct(8), location: 7 }, Const { destination: Direct(9), bit_size: Integer(U32), value: 10 }, Stop { return_data: HeapVector { pointer: Direct(9), size: Direct(1) } }]
 
-root: 0x02b85b06e471c60f9a78dc7642c141f9cc422102fbc99d406bdadf64c4c91672
-Poseidon hash result 0x115cc0f5e7d690413df64c6b9662e9cf2a3617f2743245519e19607a4417189a
-Poseidon hash result 0x0650fd43e9beb300f190ec831083e4bf15d1cf1462331ccef78d36cf20035385
-Poseidon hash result 0x2267bee7aae8ed55eb9aecff101145335ed1dd0a5a276a2b7eb3ae7d20e232d8
-Poseidon hash result 0x28e071e3c4afefce8398394b7c8843b0ad56dc66a114d9645f186db20e211ceb
-Poseidon hash result 0x094b3422394922a2cac939dc8b6944b98840df8ab97e67aaa6baf6f3019381ed
-Poseidon hash result 0x1ed848edd807c8b59c8a3eb040c680925949a6976d95384b3c258b472112d33c
-Poseidon hash result 0x212db358a278871b039575cd448b2bc4cb3411da788a8a2d141ecc50f4bdb3c0
-Poseidon hash result 0x14eff8b88ea3f3ffaa7125688bf6c8bdece48a2cf9cf59b9addfef64b105fa79
-Poseidon hash result 0x1a75b7e58f97e60568ffba395374debe5dc1367f174202150919d6bfb118e618
-Poseidon hash result 0x02b85b06e471c60f9a78dc7642c141f9cc422102fbc99d406bdadf64c4c91672
+root: 0x01c9ddc36ff6dacbdc080fc83e4242b6c868fbe47980357be2c69c89d2e6f5cc
+Poseidon hash result 0x0d4b5cd496863025ac143cf14b2808792481ea38aadbdf18db5dbd038e64aefe
+Poseidon hash result 0x1d29aee73cf3932eabc04fb103877455afcaf8b956914b7756d84ea93ad6487a
+Poseidon hash result 0x271fb6d4457227b07ca248e3a63aa62b7e3a1283011bd412391fed1e826057e5
+Poseidon hash result 0x286d53354f10c8efa0390926126dd65cdb56f415102e154fd2417f93702fed5a
+Poseidon hash result 0x123762a796a2a9ff5e55e28c5cded588da54dfb486159adca177451d920ce8fd
+Poseidon hash result 0x22424489577ce3e8606934019277933b2ae924447deaa6eb3e3c36d7e229e74f
+Poseidon hash result 0x0dd848c898c5b4e66abdf0015091392c51f4975e8854b9832027d4df3de4fc3d
+Poseidon hash result 0x20bd3af6df309ca9c6a4a4c0c7030252308ebf2089f5606d52ed13ef97ba6445
+Poseidon hash result 0x0b5552c5ff6d036c998dc5e9f9e87a4a8cc5090025102772cdd8090d411c484c
+Poseidon hash result 0x01c9ddc36ff6dacbdc080fc83e4242b6c868fbe47980357be2c69c89d2e6f5cc
 [shielded_pool] Circuit witness successfully solved
 [shielded_pool] Witness saved to target/shielded_pool.gz
