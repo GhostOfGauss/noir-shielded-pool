@@ -1,3 +1,5 @@
+import { equal } from "assert";
+
 export class Asset {
   public id: bigint;
   public amount: bigint;
@@ -22,4 +24,15 @@ export class Asset {
       amount: this.amount.toString(),
     };
   }
+}
+
+export function assertBalanced(incoming: Asset[], outgoing: Asset[]) {
+  // Like asset type:
+  incoming.map((asset) => equal(asset.id, incoming[0].id));
+  outgoing.map((asset) => equal(asset.id, incoming[0].id));
+  // Balance
+  equal(
+    incoming.reduce((sum, asset) => (sum += asset.amount), 0n),
+    outgoing.reduce((sum, asset) => (sum += asset.amount), 0n)
+  );
 }
