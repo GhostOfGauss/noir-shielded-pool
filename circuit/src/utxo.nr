@@ -1,6 +1,6 @@
 use crate::asset::Asset;
 use crate::keypair::{PublicKey, SecretKey};
-use poseidon::poseidon2::Poseidon2Hasher;
+use poseidon::poseidon::PoseidonHasher;
 use std::default::Default;
 use std::hash::Hasher;
 
@@ -61,13 +61,14 @@ impl UtxoCommitment for DummyUtxoCommitment {
 /// pre-UTXO data.
 pub struct Poseidon2UtxoCommitment;
 
-global UTXO_COMMIT_DOMAIN_TAG: Field = Field::from_le_bytes([0, 1, 2, 3, 4]);
+// TODO: removed for easier compatibility with TS implementation
+// global UTXO_COMMIT_DOMAIN_TAG: Field = Field::from_le_bytes([0, 1, 2, 3, 4]);
 
 impl UtxoCommitment for Poseidon2UtxoCommitment {
     fn commit(pre: PreUtxo) -> Field {
         // Initialize hasher
-        let mut hasher = Poseidon2Hasher::default();
-        hasher.write(UTXO_COMMIT_DOMAIN_TAG);
+        let mut hasher = PoseidonHasher::default();
+        // hasher.write(UTXO_COMMIT_DOMAIN_TAG);
         // Absorb pre-UTXO data
         hasher.write(pre.asset.id);
         hasher.write(pre.asset.amount);
@@ -101,7 +102,7 @@ global UTXO_NULLIFY_DOMAIN_TAG: Field = Field::from_le_bytes([5, 6, 7, 8, 9]);
 impl UtxoNullifier for Poseidon2UtxoNullifier {
     fn nullify(utxo: Utxo, sk: SecretKey) -> Field {
         // Initialize hasher
-        let mut hasher = Poseidon2Hasher::default();
+        let mut hasher = PoseidonHasher::default();
         hasher.write(UTXO_NULLIFY_DOMAIN_TAG);
         // Absorb pre-UTXO data
         hasher.write(utxo.commitment);
