@@ -60,7 +60,6 @@ export class Transaction {
     public incomingPreUtxos: PreUtxo[],
     public outgoingPreUtxos: PreUtxo[],
     public senderSk: SecretKey,
-    public utxoAccumulatorRoot: bigint,
     public utxoInclusionWitness: MerkleInclusionProof[]
   ) {}
 
@@ -73,7 +72,6 @@ export class Transaction {
         pre.toCircuitInput()
       ),
       sender_sk: this.senderSk.toCircuitInput(),
-      utxo_accumulator_root: this.utxoAccumulatorRoot.toString(),
       utxo_inclusion_witness: this.utxoInclusionWitness.map((witness) =>
         witness.toCircuitInput()
       ),

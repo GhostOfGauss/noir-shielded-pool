@@ -107,7 +107,6 @@ describe("Transaction", async () => {
       incomingPreUtxos,
       outgoingPreUtxos,
       senderSk,
-      utxoAccumulatorRoot,
       incomingUtxoInclusionWitnesses
     );
   });
@@ -135,6 +134,7 @@ describe("Transaction", async () => {
 
     const witnessStart = performance.now();
     const { witness, returnValue } = await noir.execute({
+      utxo_accumulator_root: utxoAccumulatorRoot.toString(),
       tx: tx.toCircuitInput(),
     });
     const witnessEnd = performance.now();

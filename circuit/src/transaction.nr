@@ -16,7 +16,7 @@ impl<R> TransactionPost<R> {
     /// Produce a `TransactionPost` from raw `Transaction`
     /// data. This function enforces all private (i.e. in-circuit)
     /// transfer validity constraints.
-    pub fn new<A, W>(utxo_accumulator: A, tx: Transaction<R, W>) -> Self
+    pub fn new<A, W>(utxo_accumulator: A, tx: Transaction<W>) -> Self
     where
         A: Accumulator<Item = Utxo, Root = R, Witness = W>,
         R: std::cmp::Eq,
@@ -35,7 +35,6 @@ impl<R> TransactionPost<R> {
         incoming_utxos.for_eachi(|i, utxo| {
             utxo_accumulator.contains(utxo, tx.utxo_inclusion_witness[i])
         });
-        assert_eq(utxo_accumulator.root(), tx.utxo_accumulator_root);
 
         // Incoming UTXO ownership
         let sender_keypair = Keypair::new(tx.sender_sk);
@@ -44,16 +43,15 @@ impl<R> TransactionPost<R> {
         // Incoming UTXO nullifiers
         let incoming_nullifiers = incoming_utxos.map(|utxo| utxo.nullify(tx.sender_sk));
 
-        Self { outgoing_utxos, incoming_nullifiers, accumulator_root: tx.utxo_accumulator_root }
+        Self { outgoing_utxos, incoming_nullifiers, accumulator_root: utxo_accumulator.root() }
     }
 }
 
 /// All data required to construct a transaction,
 /// known only to the Sender.
-pub struct Transaction<R, W> {
+pub struct Transaction<W> {
     pub incoming_pre_utxos: [PreUtxo; 2],
     pub outgoing_pre_utxos: [PreUtxo; 2],
     pub sender_sk: SecretKey,
-    pub utxo_accumulator_root: R,
     pub utxo_inclusion_witness: [W; 2],
 }
