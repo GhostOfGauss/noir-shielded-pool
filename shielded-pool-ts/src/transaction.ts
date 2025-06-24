@@ -35,7 +35,7 @@ export class TransactionPost {
 
     // Incoming UTXO nullifiers
     let incomingNullifiers = incomingUtxos.map((utxo) =>
-      utxo.nullify(tx.spenderSk)
+      utxo.nullify(tx.senderSk)
     );
 
     this.outgoingUtxos = outgoingUtxos;
@@ -59,7 +59,7 @@ export class Transaction {
   constructor(
     public incomingPreUtxos: PreUtxo[],
     public outgoingPreUtxos: PreUtxo[],
-    public spenderSk: SecretKey,
+    public senderSk: SecretKey,
     public utxoAccumulatorRoot: bigint,
     public utxoInclusionWitness: MerkleInclusionProof[]
   ) {}
@@ -72,7 +72,7 @@ export class Transaction {
       outgoing_pre_utxos: this.outgoingPreUtxos.map((pre) =>
         pre.toCircuitInput()
       ),
-      spender_sk: this.spenderSk.toCircuitInput(),
+      sender_sk: this.senderSk.toCircuitInput(),
       utxo_accumulator_root: this.utxoAccumulatorRoot.toString(),
       utxo_inclusion_witness: this.utxoInclusionWitness.map((witness) =>
         witness.toCircuitInput()

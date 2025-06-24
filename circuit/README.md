@@ -1,5 +1,5 @@
 # Noir UTXO Shielded Pool
-Noir circuit for proving the validity of a transaction in a shielded pool (see spec).
+Noir circuit for proving the validity of a transaction in a shielded pool (see [spec](./spec.md)).
 
 ## Compile / Prove / Verify
 ### Produce `Prover.toml`

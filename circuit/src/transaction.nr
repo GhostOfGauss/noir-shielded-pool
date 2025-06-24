@@ -38,11 +38,11 @@ impl<R> TransactionPost<R> {
         assert_eq(utxo_accumulator.root(), tx.utxo_accumulator_root);
 
         // Incoming UTXO ownership
-        let spender_keypair = Keypair::new(tx.spender_sk);
-        tx.incoming_pre_utxos.for_each(|pre| assert_eq(spender_keypair.public(), pre.pk));
+        let sender_keypair = Keypair::new(tx.sender_sk);
+        tx.incoming_pre_utxos.for_each(|pre| assert_eq(sender_keypair.public(), pre.pk));
 
         // Incoming UTXO nullifiers
-        let incoming_nullifiers = incoming_utxos.map(|utxo| utxo.nullify(tx.spender_sk));
+        let incoming_nullifiers = incoming_utxos.map(|utxo| utxo.nullify(tx.sender_sk));
 
         Self { outgoing_utxos, incoming_nullifiers, accumulator_root: tx.utxo_accumulator_root }
     }
@@ -53,7 +53,7 @@ impl<R> TransactionPost<R> {
 pub struct Transaction<R, W> {
     pub incoming_pre_utxos: [PreUtxo; 2],
     pub outgoing_pre_utxos: [PreUtxo; 2],
-    pub spender_sk: SecretKey,
+    pub sender_sk: SecretKey,
     pub utxo_accumulator_root: R,
     pub utxo_inclusion_witness: [W; 2],
 }
