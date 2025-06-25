@@ -25,3 +25,6 @@ A key derived from the secret key that allows a trusted third-party to produce p
 
 ### Viewing Keys
 Yet another step in the key hierarchy, the viewing key enables third-party auditors to decrypt the encrypted notes but does not grant proof authorization or signing authority. This key would be shared, for example, with auditors for compliance.
+
+### Public Assets
+Currently all UTXOs are private, but of course a proper implementation would support transactions containing a mix of private and public assets. Otherwise it's hard to imagine how an asset would ever enter the shielded pool to begin with...
